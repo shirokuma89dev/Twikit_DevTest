@@ -1,41 +1,22 @@
-import numpy as np
+from twikit import Client
+import json
+import SECRETS
 
-def f(x):
-    return np.sqrt(4 - x**2)
+# Initialize client
+client = Client('en-US')
 
-def intg_daikei(a, b, n):
-    h = (b - a) / n
-    x = np.arange(a, b + h, h)
-    y = f(x)
-    return h * (0.5 * y[0] + 0.5 * y[-1] + np.sum(y[1:-1]))
+if not client.is_logged_in():
+    client.login(
+        auth_info_1=SECRETS.USERNAME ,
+        auth_info_2=SECRETS.EMAIL,
+        password=SECRETS.PASSWORD
+    )
 
+    client.save_cookies('COOKIES.json')
 
-def intg_chuten(a, b, n):
-    h = (b - a) / n
-    x = np.arange(a + h / 2, b, h)
-    y = f(x)
-    return h * np.sum(y)
+with open('COOKIES.json', 'r', encoding='utf-8') as f:
+    client.set_cookies(json.load(f))
 
-n_list = [50, 100, 500, 1000, 2000, 5000, 10000, 20000]
-
-print("n\t台形則によるπの近似値\t中点則によるπの近似値")
-print("-" * 53)
-
-for n in n_list:
-    pi_daikei = intg_daikei(0, 2, n)
-    pi_chuten = intg_chuten(0, 2, n)
-    # 結果を表形式で表示
-    print(str(n) + "\t" + str(pi_daikei) + "\t" + str(pi_chuten))
-
-### Result ###
-
-# n       台形則によるπの近似値   中点則によるπの近似値
-# -----------------------------------------------------
-# 50      3.1382685110984996      3.142565552459592
-# 100     3.140417031779046       3.1419368579000095
-# 500     3.141487477002141       3.1416234568199144
-# 1000    3.1415554669110275      3.1416035449129027
-# 2000    3.141579505911965       3.1415965043842413
-# 5000    3.1415893274305815      3.141593627792062
-# 10000   3.1415914776113225      3.141592998024638
-# 20000   3.1415922378179806      3.141592775366312
+client.create_tweet(
+    text='こんにちは'
+)
