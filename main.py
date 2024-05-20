@@ -1,12 +1,16 @@
 ## According to the following URL, the code is based on the code in the URL.
 ## https://twikit.readthedocs.io/en/latest/index.html
 
+## Note: Create a file named "SECRETS.py" in the same directory as this file and write the following code.
+## USERNAME = "Your Twitter Username"
+## EMAIL = "Your Twitter Email"
+## PASSWORD = "Your Twitter Password"
+
 from twikit import Client
 import argparse
 import traceback
 import unicodedata
 import SECRETS
-
 
 def get_east_asian_width_count(text):
     count = 0
